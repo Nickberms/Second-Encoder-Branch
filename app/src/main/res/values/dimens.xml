@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_edittext_width">181dp</dimen>
+    <dimen name="edit_text_width">200dp</dimen>
+
+</resources>
