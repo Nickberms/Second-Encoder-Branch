@@ -30,10 +30,10 @@ public class LocationHelper {
                 if (location != null) {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
-                    DecimalFormat decimalFormat = new DecimalFormat("#.####");
+                    DecimalFormat decimalFormat = new DecimalFormat("#.######");
                     String formattedLatitude = decimalFormat.format(latitude);
                     String formattedLongitude = decimalFormat.format(longitude);
-                    String geolocationLink = "maps.google.com/?q=" + formattedLatitude + "," + formattedLongitude;
+                    String geolocationLink = formattedLatitude + "," + formattedLongitude;
                     Log.d(TAG, "Geolocation Link: " + geolocationLink);
                     inputEditText.setText(geolocationLink);
                 }

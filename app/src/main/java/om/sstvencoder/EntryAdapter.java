@@ -53,8 +53,18 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
         }
 
         public void bind(Entry entry) {
-            imageView.setImageBitmap(entry.getImageBitmap());
-            textView.setText(entry.getText());
+            if (entry.getImageBitmap() != null) {
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageBitmap(entry.getImageBitmap());
+            } else {
+                imageView.setVisibility(View.GONE);
+            }
+            if (entry.getText() != null) {
+                textView.setVisibility(View.VISIBLE);
+                textView.setText(entry.getText());
+            } else {
+                textView.setVisibility(View.GONE);
+            }
             timestampTextView.setText(entry.getTimestamp());
         }
     }

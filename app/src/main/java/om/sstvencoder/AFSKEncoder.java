@@ -14,67 +14,41 @@ public class AFSKEncoder {
         }
     }
 
-    // Method to start SSTV encoding with a specified start frequency
     public static void startSSTVEncoding(double startFrequency) {
-        // Create a new thread for the SSTV encoding
         Thread sstvEncodingThread = new Thread(() -> {
-            // Set the flag to continue audio playback
             shouldContinueAudio = true;
-            // Set the sample rate for audio playback
             int sampleRate = 44100;
-            // Set the duration (in milliseconds) for the start frequency audio
             int duration = 4000;
-            // Calculate the number of samples needed for the start frequency audio
             int numSamplesPerStartFrequency = (sampleRate * duration) / 1000;
-            // Create an array to hold the audio samples for the start frequency
             double[] startFrequencySamples = new double[numSamplesPerStartFrequency];
-            // Generate the audio samples for the start frequency
             for (int i = 0; i < numSamplesPerStartFrequency; i++) {
                 double time = (double) i / sampleRate;
                 startFrequencySamples[i] = Math.sin(2 * Math.PI * startFrequency * time);
             }
-            // Create an array to hold all the audio samples
             double[] samples = new double[numSamplesPerStartFrequency];
-            // Initialize the current index in the samples array
             int currentIndex = 0;
-            // Copy the start frequency audio samples to the main samples array
             System.arraycopy(startFrequencySamples, 0, samples, currentIndex, numSamplesPerStartFrequency);
-            // Play the audio with the specified start frequency
             playAudio(samples, sampleRate);
         });
-        // Start the SSTV encoding thread
         sstvEncodingThread.start();
     }
 
-    // Method to stop SSTV encoding with a specified stop frequency
     public static void stopSSTVEncoding(double stopFrequency) {
-        // Create a new thread for stopping the SSTV encoding
         Thread sstvStopThread = new Thread(() -> {
-            // Set the flag to continue audio playback
             shouldContinueAudio = true;
-            // Set the sample rate for audio playback
             int sampleRate = 44100;
-            // Set the duration (in milliseconds) for the stop frequency audio
             int duration = 4000;
-            // Calculate the number of samples needed for the stop frequency audio
             int numSamplesPerStopFrequency = (sampleRate * duration) / 1000;
-            // Create an array to hold the audio samples for the stop frequency
             double[] stopFrequencySamples = new double[numSamplesPerStopFrequency];
-            // Generate the audio samples for the stop frequency
             for (int i = 0; i < numSamplesPerStopFrequency; i++) {
                 double time = (double) i / sampleRate;
                 stopFrequencySamples[i] = Math.sin(2 * Math.PI * stopFrequency * time);
             }
-            // Create an array to hold all the audio samples
             double[] samples = new double[numSamplesPerStopFrequency];
-            // Initialize the current index in the samples array
             int currentIndex = 0;
-            // Copy the stop frequency audio samples to the main samples array
             System.arraycopy(stopFrequencySamples, 0, samples, currentIndex, numSamplesPerStopFrequency);
-            // Play the audio with the specified stop frequency
             playAudio(samples, sampleRate);
         });
-        // Start the SSTV stop thread
         sstvStopThread.start();
     }
 
