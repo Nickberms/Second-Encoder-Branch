@@ -466,6 +466,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(entryAdapter);
+        recyclerView.smoothScrollToPosition(entryAdapter.getItemCount() - 1);
     }
 
     private Runnable textEncodingRunnable;
@@ -498,12 +499,12 @@ public class MainActivity extends AppCompatActivity {
             playButton.setVisibility(View.INVISIBLE);
             deleteButton.setVisibility(View.GONE);
             showMessage("Activating SSTV encoder.");
-            AFSKEncoder.startSSTVEncoding(4150.0);
+            AFSKEncoder.startSSTVEncoding(4200.0);
             mEncoder.setOnEncodeCompleteListener(() -> showMessage("Encoding image now."));
             mHandler.postDelayed(() -> mEncoder.play(mCropView.getBitmap()), 4000);
             imageEncodingRunnable = () -> {
                 showMessage("Deactivating SSTV encoder.");
-                AFSKEncoder.stopSSTVEncoding(4200.0);
+                AFSKEncoder.stopSSTVEncoding(4250.0);
                 insertDataIntoDatabase(imageByteArray, null);
                 displayNewData();
             };
@@ -519,7 +520,7 @@ public class MainActivity extends AppCompatActivity {
             AFSKEncoder.encodeAndPlayAFSKString(inputText);
             textEncodingRunnable = () -> {
                 showMessage("Activating SSTV encoder.");
-                AFSKEncoder.startSSTVEncoding(4150.0);
+                AFSKEncoder.startSSTVEncoding(4200.0);
                 mEncoder.setOnEncodeCompleteListener(() -> showMessage("Encoding image now."));
                 mHandler.postDelayed(() -> mEncoder.play(mCropView.getBitmap()), 4000);
                 insertDataIntoDatabase(null, inputText);
@@ -528,7 +529,7 @@ public class MainActivity extends AppCompatActivity {
             mHandler.postDelayed(textEncodingRunnable, totalTextEncodingTime);
             mHandler.postDelayed(() -> {
                 showMessage("Deactivating SSTV encoder.");
-                AFSKEncoder.stopSSTVEncoding(4200.0);
+                AFSKEncoder.stopSSTVEncoding(4250.0);
                 insertDataIntoDatabase(imageByteArray, null);
                 displayNewData();
             }, totalTextAndImageEncodingTime + 3000);
