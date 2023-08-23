@@ -466,7 +466,9 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(entryAdapter);
-        recyclerView.smoothScrollToPosition(entryAdapter.getItemCount() - 1);
+        if (!entries.isEmpty()) {
+            recyclerView.smoothScrollToPosition(entryAdapter.getItemCount() - 1);
+        }
     }
 
     private Runnable textEncodingRunnable;
