@@ -2,8 +2,4 @@
 <resources>
     <string name="app_name">Second Encoder Branch</string>
     <string name="action_robot36">Robot 36</string>
-    <string name="message_no_camera">Device has no camera.</string>
-    <string name="another_activity_resolve_err">Another activity could not be resolved.</string>
-    <string name="another_activity_start_err">Another activity could not be started.</string>
-    />
 </resources>

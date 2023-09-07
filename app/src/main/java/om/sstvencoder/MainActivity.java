@@ -56,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 12;
     private static final int REQUEST_LOCATION_PERMISSION = 4;
     private Settings mSettings;
-    private CropView mCropView;
+    private CropView cpvDisplayPicture;
     private Encoder mEncoder;
-    private EditText inputEditText;
-    private Button deleteButton;
+    private EditText edtEnterText;
+    private Button btnDeletePicture;
     private MyDatabaseHelper dbHelper;
     private LocationHelper locationHelper;
 
@@ -71,30 +71,28 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity", "Database file path: " + databaseFile.getAbsolutePath());
         Stetho.initializeWithDefaults(this);
         displayNewData();
-        if (checkLocationPermission()) {
-            showMessage("Location permission successfully granted.");
-        } else {
+        if (!checkLocationPermission()) {
             requestLocationPermission();
         }
-        deleteButton = findViewById(R.id.deleteButton);
-        mCropView = findViewById(R.id.cropView);
-        mCropView.setVisibility(View.GONE);
+        btnDeletePicture = findViewById(R.id.btnDeletePicture);
+        cpvDisplayPicture = findViewById(R.id.cpvDisplayPicture);
+        cpvDisplayPicture.setVisibility(View.GONE);
         boolean isRestarted = isAppRestarted();
         if (!isRestarted) {
-            mCropView.setVisibility(View.GONE);
+            cpvDisplayPicture.setVisibility(View.GONE);
             destroyPreviousData();
         }
-        Button imageCaptureButton = findViewById(R.id.btnTakePicture);
-        imageCaptureButton.setOnClickListener(v -> takePicture());
-        Button pickImageButton = findViewById(R.id.btnPickPicture);
-        pickImageButton.setOnClickListener(v -> dispatchPickPictureIntent());
-        Button btnLocation = findViewById(R.id.btnLocation);
-        btnLocation.setOnClickListener(v -> getLocationAndUpdateTextField());
-        inputEditText = findViewById(R.id.inputEditText);
-        Button stop = findViewById(R.id.btnStop);
-        stop.setOnClickListener(v -> stopEncoding());
-        Button playButton = findViewById(R.id.action_play);
-        playButton.setOnClickListener(v -> startEncoding());
+        Button btnTakePicture = findViewById(R.id.btnTakePicture);
+        btnTakePicture.setOnClickListener(v -> takePicture());
+        Button btnPickPicture = findViewById(R.id.btnPickPicture);
+        btnPickPicture.setOnClickListener(v -> dispatchPickPictureIntent());
+        Button btnGetLocation = findViewById(R.id.btnGetLocation);
+        btnGetLocation.setOnClickListener(v -> getLocationAndUpdateTextField());
+        edtEnterText = findViewById(R.id.edtEnterText);
+        Button btnStopEncoding = findViewById(R.id.btnStopEncoding);
+        btnStopEncoding.setOnClickListener(v -> stopEncoding());
+        Button btnStartEncoding = findViewById(R.id.btnStartEncoding);
+        btnStartEncoding.setOnClickListener(v -> startEncoding());
         MainActivityMessenger messenger = new MainActivityMessenger(this);
         mEncoder = new Encoder(messenger);
         mSettings = new Settings(this);
@@ -111,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("Copied Text", textToCopy);
             clipboard.setPrimaryClip(clip);
-            Toast.makeText(this, "Text copied to clipboard.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Text copied to clipboard", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -137,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         if (mapIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(mapIntent);
         } else {
-            Toast.makeText(this, "Please install Google Maps first.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please install Google Maps first", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -145,10 +143,10 @@ public class MainActivity extends AppCompatActivity {
         if (checkLocationPermission()) {
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             if (locationManager != null && !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                showMessage("Please turn on the device location.");
+                showMessage("Please turn on the device location");
             } else {
                 if (locationHelper == null) {
-                    locationHelper = new LocationHelper(this, inputEditText);
+                    locationHelper = new LocationHelper(this, edtEnterText);
                 }
                 locationHelper.startLocationUpdates();
             }
@@ -176,11 +174,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case REQUEST_LOCATION_PERMISSION:
                 if (permissionGranted(grantResults)) {
-                    showMessage("Location permission successfully granted.");
+                    showMessage("Location permission successfully granted");
                 } else {
-                    showMessage("Location permission not granted.");
+                    showMessage("Location permission not granted");
                     int delayMillis = 3000;
-                    new Handler().postDelayed(() -> showMessage("You can grant the app location permission in Settings."), delayMillis);
+                    new Handler().postDelayed(() -> showMessage("You can grant the app location permission in Settings"), delayMillis);
                 }
                 break;
             default:
@@ -216,14 +214,14 @@ public class MainActivity extends AppCompatActivity {
     private void destroyPreviousData() {
         File previousImageFile = new File(getFilesDir(), "uploaded_image.jpg");
         if (previousImageFile.exists()) {
-            mCropView.setVisibility(View.GONE);
+            cpvDisplayPicture.setVisibility(View.GONE);
         }
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        mCropView.setVisibility(View.GONE);
+        cpvDisplayPicture.setVisibility(View.GONE);
         loadImage(intent);
     }
 
@@ -239,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Uri getImageUriFromIntent(Intent intent) {
-        mCropView.setVisibility(View.GONE);
+        cpvDisplayPicture.setVisibility(View.GONE);
         Uri uri = null;
         if (isIntentTypeValid(intent.getType()) && isIntentActionValid(intent.getAction())) {
             uri = intent.hasExtra(Intent.EXTRA_STREAM) ?
@@ -252,13 +250,13 @@ public class MainActivity extends AppCompatActivity {
         boolean succeeded = false;
         ContentResolver resolver = getContentResolver();
         if (uri != null) {
-            mCropView.setVisibility(View.VISIBLE);
+            cpvDisplayPicture.setVisibility(View.VISIBLE);
             try {
                 InputStream stream = resolver.openInputStream(uri);
                 if (stream != null) {
-                    mCropView.setBitmap(stream);
+                    cpvDisplayPicture.setBitmap(stream);
                     succeeded = true;
-                    deleteButton.setOnClickListener(v -> resetState());
+                    btnDeletePicture.setOnClickListener(v -> resetState());
                 }
             } catch (Exception ex) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isPermissionException(ex)
@@ -267,10 +265,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } else {
-            mCropView.setVisibility(View.GONE);
+            cpvDisplayPicture.setVisibility(View.GONE);
         }
         if (succeeded) {
-            mCropView.rotateImage(getOrientation(resolver, uri));
+            cpvDisplayPicture.rotateImage(getOrientation(resolver, uri));
             mSettings.setImageUri(uri);
         }
         return succeeded;
@@ -278,20 +276,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void resetState() {
         try {
-            mCropView.setBitmap(null);
+            cpvDisplayPicture.setBitmap(null);
             mSettings.setImageUri(null);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mCropView.setVisibility(View.GONE);
+        cpvDisplayPicture.setVisibility(View.GONE);
         mSettings.setImageUri(null);
     }
 
     private void setDefaultBitmap() {
         try {
-            mCropView.setBitmap(getResources().openRawResource(R.raw.smpte_color_bars));
+            cpvDisplayPicture.setBitmap(getResources().openRawResource(R.raw.color_bars));
         } catch (Exception ignore) {
-            mCropView.setNoBitmap();
+            cpvDisplayPicture.setNoBitmap();
         }
         mSettings.setImageUri(null);
     }
@@ -363,14 +361,14 @@ public class MainActivity extends AppCompatActivity {
     private void setMode(String modeClassName) {
         if (mEncoder.setMode(modeClassName)) {
             IModeInfo modeInfo = mEncoder.getModeInfo();
-            mCropView.setModeSize(modeInfo.getModeSize());
+            cpvDisplayPicture.setModeSize(modeInfo.getModeSize());
             mSettings.setModeClassName(modeClassName);
         }
     }
 
     private void takePicture() {
         if (!hasCamera()) {
-            Toast.makeText(this, getString(R.string.message_no_camera), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Device has no camera", Toast.LENGTH_SHORT).show();
             return;
         }
         if (needsRequestWritePermission())
@@ -400,13 +398,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void tryToStartActivityForResult(Intent intent, int requestCode) {
         if (intent.resolveActivity(getPackageManager()) == null) {
-            Toast.makeText(this, R.string.another_activity_resolve_err, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Another activity could not be resolved", Toast.LENGTH_SHORT).show();
             return;
         }
         try {
             startActivityForResult(intent, requestCode);
         } catch (Exception ignore) {
-            Toast.makeText(this, R.string.another_activity_start_err, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Another activity could not be resolved", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -462,7 +460,7 @@ public class MainActivity extends AppCompatActivity {
         List<Entry> entries = dbHelper.getAllEntries();
         EntryAdapter entryAdapter = new EntryAdapter();
         entryAdapter.setEntries(entries);
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.RecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(entryAdapter);
@@ -476,78 +474,78 @@ public class MainActivity extends AppCompatActivity {
     private Runnable imageEncodingRunnable;
 
     private void startEncoding() {
-        String inputText = inputEditText.getText().toString();
-        Bitmap imageBitmap = mCropView.getBitmap();
+        String inputText = edtEnterText.getText().toString();
+        Bitmap imageBitmap = cpvDisplayPicture.getBitmap();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         byte[] imageByteArray = outputStream.toByteArray();
-        Button playButton = findViewById(R.id.action_play);
+        Button btnStartEncoding = findViewById(R.id.btnStartEncoding);
         int afskSpecialFrequencyDuration = 0;
         int textEncodingDurationPerChar = 1300;
         int imageEncodingDuration = 38000;
         int totalTextEncodingTime = afskSpecialFrequencyDuration + textEncodingDurationPerChar * inputText.length();
         int totalTextAndImageEncodingTime = totalTextEncodingTime + imageEncodingDuration;
-        if (!inputText.isEmpty() && mCropView.getVisibility() == View.GONE) {
-            playButton.setVisibility(View.INVISIBLE);
-            showMessage("Encoding text now.");
+        if (!inputText.isEmpty() && cpvDisplayPicture.getVisibility() == View.GONE) {
+            btnStartEncoding.setVisibility(View.INVISIBLE);
+            showMessage("Encoding text now");
             AFSKEncoder.encodeAndPlayAFSKString(inputText);
             textEncodingRunnable = () -> {
-                playButton.setVisibility(View.VISIBLE);
+                btnStartEncoding.setVisibility(View.VISIBLE);
                 insertDataIntoDatabase(null, inputText);
                 displayNewData();
             };
             mHandler.postDelayed(textEncodingRunnable, totalTextEncodingTime);
-        } else if (inputText.isEmpty() && mCropView.getVisibility() == View.VISIBLE) {
-            playButton.setVisibility(View.INVISIBLE);
-            deleteButton.setVisibility(View.GONE);
-            showMessage("Activating SSTV encoder.");
-            AFSKEncoder.startSSTVEncoding(4200.0);
-            mEncoder.setOnEncodeCompleteListener(() -> showMessage("Encoding image now."));
-            mHandler.postDelayed(() -> mEncoder.play(mCropView.getBitmap()), 4000);
+        } else if (inputText.isEmpty() && cpvDisplayPicture.getVisibility() == View.VISIBLE) {
+            btnStartEncoding.setVisibility(View.INVISIBLE);
+            btnDeletePicture.setVisibility(View.GONE);
+            showMessage("Activating SSTV encoder");
+            AFSKEncoder.startSSTVEncoding(1700.0);
+            mEncoder.setOnEncodeCompleteListener(() -> showMessage("Encoding image now"));
+            mHandler.postDelayed(() -> mEncoder.play(cpvDisplayPicture.getBitmap()), 4000);
             imageEncodingRunnable = () -> {
-                showMessage("Deactivating SSTV encoder.");
-                AFSKEncoder.stopSSTVEncoding(4250.0);
+                showMessage("Deactivating SSTV encoder");
+                AFSKEncoder.stopSSTVEncoding(1750.0);
                 insertDataIntoDatabase(imageByteArray, null);
                 displayNewData();
             };
             mHandler.postDelayed(imageEncodingRunnable, imageEncodingDuration + 3000);
             mHandler.postDelayed(() -> {
-                playButton.setVisibility(View.VISIBLE);
-                deleteButton.setVisibility(View.VISIBLE);
+                btnStartEncoding.setVisibility(View.VISIBLE);
+                btnDeletePicture.setVisibility(View.VISIBLE);
             }, imageEncodingDuration + 8000);
-        } else if (!inputText.isEmpty() && mCropView.getVisibility() == View.VISIBLE) {
-            playButton.setVisibility(View.INVISIBLE);
-            deleteButton.setVisibility(View.GONE);
-            showMessage("Encoding text now.");
+        } else if (!inputText.isEmpty() && cpvDisplayPicture.getVisibility() == View.VISIBLE) {
+            btnStartEncoding.setVisibility(View.INVISIBLE);
+            btnDeletePicture.setVisibility(View.GONE);
+            showMessage("Encoding text now");
             AFSKEncoder.encodeAndPlayAFSKString(inputText);
             textEncodingRunnable = () -> {
-                showMessage("Activating SSTV encoder.");
-                AFSKEncoder.startSSTVEncoding(4200.0);
-                mEncoder.setOnEncodeCompleteListener(() -> showMessage("Encoding image now."));
-                mHandler.postDelayed(() -> mEncoder.play(mCropView.getBitmap()), 4000);
+                showMessage("Activating SSTV encoder");
+                AFSKEncoder.startSSTVEncoding(1700.0);
+                mEncoder.setOnEncodeCompleteListener(() -> showMessage("Encoding image now"));
+                mHandler.postDelayed(() -> mEncoder.play(cpvDisplayPicture.getBitmap()), 4000);
                 insertDataIntoDatabase(null, inputText);
                 displayNewData();
             };
             mHandler.postDelayed(textEncodingRunnable, totalTextEncodingTime);
             mHandler.postDelayed(() -> {
-                showMessage("Deactivating SSTV encoder.");
-                AFSKEncoder.stopSSTVEncoding(4250.0);
+                showMessage("Deactivating SSTV encoder");
+                AFSKEncoder.stopSSTVEncoding(1750.0);
                 insertDataIntoDatabase(imageByteArray, null);
                 displayNewData();
             }, totalTextAndImageEncodingTime + 3000);
             mHandler.postDelayed(() -> {
-                playButton.setVisibility(View.VISIBLE);
-                deleteButton.setVisibility(View.VISIBLE);
+                btnStartEncoding.setVisibility(View.VISIBLE);
+                btnDeletePicture.setVisibility(View.VISIBLE);
             }, totalTextAndImageEncodingTime + 8000);
         } else {
-            showMessage("Please enter text or add an image first.");
+            showMessage("Please enter text or add an image first");
         }
     }
 
     private void stopEncoding() {
-        Button playButton = findViewById(R.id.action_play);
-        playButton.setVisibility(View.VISIBLE);
-        deleteButton.setVisibility(View.VISIBLE);
+        Button btnStartEncoding = findViewById(R.id.btnStartEncoding);
+        btnStartEncoding.setVisibility(View.VISIBLE);
+        btnDeletePicture.setVisibility(View.VISIBLE);
         AFSKEncoder.stopAudio();
         mEncoder.stop();
         mHandler.removeCallbacksAndMessages(null);
@@ -558,7 +556,7 @@ public class MainActivity extends AppCompatActivity {
     private void saveWave() {
         if (Utility.isExternalStorageWritable()) {
             WaveFileOutputContext context = new WaveFileOutputContext(getContentResolver(), Utility.createWaveFileName());
-            mEncoder.save(mCropView.getBitmap(), context);
+            mEncoder.save(cpvDisplayPicture.getBitmap(), context);
         }
     }
 

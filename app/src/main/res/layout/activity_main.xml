@@ -15,7 +15,7 @@
         android:weightSum="200">
 
         <Button
-            android:id="@+id/backButton"
+            android:id="@+id/btnBackHome"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginStart="5dp"
@@ -30,7 +30,7 @@
             android:layout_weight="20" />
 
         <TextView
-            android:id="@+id/txtMode"
+            android:id="@+id/txtSendMode"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
@@ -50,26 +50,25 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/bottomButtonsLayout"
+        android:layout_above="@id/FooterLayout"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="10dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/RecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true" />
 
         <FrameLayout
-            android:id="@+id/frameLayout"
             android:layout_width="120dp"
             android:layout_height="90dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:background="@raw/smpte_color_bars">
+            android:background="@raw/color_bars">
 
             <Button
-                android:id="@+id/deleteButton"
+                android:id="@+id/btnDeletePicture"
                 android:layout_width="32dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="5dp"
@@ -80,14 +79,14 @@
                 android:textColor="@android:color/black" />
 
             <om.sstvencoder.CropView
-                android:id="@+id/cropView"
+                android:id="@+id/cpvDisplayPicture"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </FrameLayout>
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/bottomButtonsLayout"
+        android:id="@+id/FooterLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -127,7 +126,7 @@
             android:layout_height="1dp" />
 
         <Button
-            android:id="@+id/btnLocation"
+            android:id="@+id/btnGetLocation"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
@@ -142,12 +141,12 @@
             android:layout_height="1dp" />
 
         <EditText
-            android:id="@+id/inputEditText"
+            android:id="@+id/edtEnterText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="100"
             android:background="@drawable/circular_border"
-            android:digits="0123456789/=:!?, .abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#-+()/=%*':!?, ."
             android:hint="Enter text"
             android:inputType="textMultiLine"
             android:maxWidth="300dp"
@@ -162,7 +161,7 @@
             android:layout_height="1dp" />
 
         <Button
-            android:id="@+id/btnStop"
+            android:id="@+id/btnStopEncoding"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
@@ -177,7 +176,7 @@
             android:layout_height="1dp" />
 
         <Button
-            android:id="@+id/action_play"
+            android:id="@+id/btnStartEncoding"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_gravity="center"

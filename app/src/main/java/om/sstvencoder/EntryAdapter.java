@@ -47,9 +47,9 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryViewHol
 
         public EntryViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
-            textView = itemView.findViewById(R.id.textView);
-            timestampTextView = itemView.findViewById(R.id.timestampTextView);
+            imageView = itemView.findViewById(R.id.imgDisplayPicture);
+            textView = itemView.findViewById(R.id.txtDisplayText);
+            timestampTextView = itemView.findViewById(R.id.txtDisplayTime);
         }
 
         public void bind(Entry entry) {
