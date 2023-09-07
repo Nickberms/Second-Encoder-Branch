@@ -156,111 +156,113 @@ public class AFSKEncoder {
         switch (Character.toLowerCase(c)) {
             // FREQUENCY FOR NUMBERS
             case '0':
-                return 1800.0;
-            case '1':
-                return 1850.0;
-            case '2':
-                return 1900.0;
-            case '3':
-                return 1950.0;
-            case '4':
                 return 2000.0;
-            case '5':
+            case '1':
                 return 2050.0;
-            case '6':
+            case '2':
                 return 2100.0;
-            case '7':
+            case '3':
                 return 2150.0;
-            case '8':
+            case '4':
                 return 2200.0;
-            case '9':
+            case '5':
                 return 2250.0;
+            case '6':
+                return 2300.0;
+            case '7':
+                return 2350.0;
+            case '8':
+                return 2400.0;
+            case '9':
+                return 2450.0;
+
             // FREQUENCY FOR LETTERS
             case 'a':
-                return 2300.0;
-            case 'b':
-                return 2350.0;
-            case 'c':
-                return 2400.0;
-            case 'd':
-                return 2450.0;
-            case 'e':
-                return 2500.0;
-            case 'f':
-                return 2550.0;
-            case 'g':
-                return 2600.0;
-            case 'h':
-                return 2650.0;
-            case 'i':
-                return 2700.0;
-            case 'j':
-                return 2750.0;
-            case 'k':
                 return 2800.0;
-            case 'l':
+            case 'b':
                 return 2850.0;
-            case 'm':
+            case 'c':
                 return 2900.0;
-            case 'n':
+            case 'd':
                 return 2950.0;
-            case 'o':
+            case 'e':
                 return 3000.0;
-            case 'p':
+            case 'f':
                 return 3050.0;
-            case 'q':
+            case 'g':
                 return 3100.0;
-            case 'r':
+            case 'h':
                 return 3150.0;
-            case 's':
+            case 'i':
                 return 3200.0;
-            case 't':
+            case 'j':
                 return 3250.0;
-            case 'u':
+            case 'k':
                 return 3300.0;
-            case 'v':
+            case 'l':
                 return 3350.0;
-            case 'w':
+            case 'm':
                 return 3400.0;
-            case 'x':
+            case 'n':
                 return 3450.0;
-            case 'y':
+            case 'o':
                 return 3500.0;
-            case 'z':
+            case 'p':
                 return 3550.0;
+            case 'q':
+                return 3600.0;
+            case 'r':
+                return 3650.0;
+            case 's':
+                return 3700.0;
+            case 't':
+                return 3750.0;
+            case 'u':
+                return 3800.0;
+            case 'v':
+                return 3850.0;
+            case 'w':
+                return 3900.0;
+            case 'x':
+                return 3950.0;
+            case 'y':
+                return 4000.0;
+            case 'z':
+                return 4050.0;
+
             // FREQUENCY FOR SPECIAL CHARACTERS
             case '#':
-                return 3600.0;
-            case '-':
-                return 3650.0;
-            case '+':
-                return 3700.0;
-            case '(':
-                return 3750.0;
-            case ')':
-                return 3800.0;
-            case '/':
-                return 3850.0;
-            case '=':
-                return 3900.0;
-            case '%':
-                return 3950.0;
-            case '*':
-                return 4000.0;
-            case '\'':
-                return 4050.0;
-            case ':':
                 return 4100.0;
-            case '!':
+            case '-':
                 return 4150.0;
-            case '?':
+            case '+':
                 return 4200.0;
-            case ',':
+            case '(':
                 return 4250.0;
-            case ' ':
+            case ')':
                 return 4300.0;
-            case '.':
+            case '/':
                 return 4350.0;
+            case '=':
+                return 4400.0;
+            case '%':
+                return 4450.0;
+            case ':':
+                return 4600.0;
+            case '!':
+                return 4650.0;
+            case '?':
+                return 4700.0;
+            case ',':
+                return 4750.0;
+            case '.':
+                return 4800.0;
+            case '*':
+                return 4850.0;
+            case '\'':
+                return 4900.0;
+            case ' ':
+                return 4950.0;
         }
         return 0;
     }

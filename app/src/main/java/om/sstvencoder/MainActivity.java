@@ -499,7 +499,7 @@ public class MainActivity extends AppCompatActivity {
             btnStartEncoding.setVisibility(View.INVISIBLE);
             btnDeletePicture.setVisibility(View.GONE);
             showMessage("Activating SSTV encoder");
-            AFSKEncoder.startSSTVEncoding(1700.0);
+            AFSKEncoder.startSSTVEncoding(4500.0); // special frequency
             mEncoder.setOnEncodeCompleteListener(() -> showMessage("Encoding image now"));
             mHandler.postDelayed(() -> mEncoder.play(cpvDisplayPicture.getBitmap()), 4000);
             imageEncodingRunnable = () -> {
@@ -520,7 +520,7 @@ public class MainActivity extends AppCompatActivity {
             AFSKEncoder.encodeAndPlayAFSKString(inputText);
             textEncodingRunnable = () -> {
                 showMessage("Activating SSTV encoder");
-                AFSKEncoder.startSSTVEncoding(1700.0);
+                AFSKEncoder.startSSTVEncoding(4500.0);
                 mEncoder.setOnEncodeCompleteListener(() -> showMessage("Encoding image now"));
                 mHandler.postDelayed(() -> mEncoder.play(cpvDisplayPicture.getBitmap()), 4000);
                 insertDataIntoDatabase(null, inputText);
