@@ -146,7 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="100"
             android:background="@drawable/circular_border"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#-+()/=%*':!?, ."
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!?,. "
             android:hint="Enter text"
             android:inputType="textMultiLine"
             android:maxWidth="300dp"
