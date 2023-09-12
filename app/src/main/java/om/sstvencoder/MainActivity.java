@@ -499,12 +499,12 @@ public class MainActivity extends AppCompatActivity {
             btnStartEncoding.setVisibility(View.INVISIBLE);
             btnDeletePicture.setVisibility(View.GONE);
             showMessage("Activating SSTV encoder");
-            AFSKEncoder.startSSTVEncoding(4500.0); // special frequency
+            AFSKEncoder.startSSTVEncoding(1800.0); // SPECIAL FREQUENCY FOR STARTING SSTV
             mEncoder.setOnEncodeCompleteListener(() -> showMessage("Encoding image now"));
             mHandler.postDelayed(() -> mEncoder.play(cpvDisplayPicture.getBitmap()), 4000);
             imageEncodingRunnable = () -> {
                 showMessage("Deactivating SSTV encoder");
-                AFSKEncoder.stopSSTVEncoding(1750.0);
+                // AFSKEncoder.stopSSTVEncoding(1900.0); // UNUSED SPECIAL FREQUENCY FOR STOPPING SSTV
                 insertDataIntoDatabase(imageByteArray, null);
                 displayNewData();
             };
@@ -520,7 +520,7 @@ public class MainActivity extends AppCompatActivity {
             AFSKEncoder.encodeAndPlayAFSKString(inputText);
             textEncodingRunnable = () -> {
                 showMessage("Activating SSTV encoder");
-                AFSKEncoder.startSSTVEncoding(4500.0);
+                AFSKEncoder.startSSTVEncoding(1800.0); // SPECIAL FREQUENCY FOR STARTING SSTV
                 mEncoder.setOnEncodeCompleteListener(() -> showMessage("Encoding image now"));
                 mHandler.postDelayed(() -> mEncoder.play(cpvDisplayPicture.getBitmap()), 4000);
                 insertDataIntoDatabase(null, inputText);
@@ -529,7 +529,7 @@ public class MainActivity extends AppCompatActivity {
             mHandler.postDelayed(textEncodingRunnable, totalTextEncodingTime);
             mHandler.postDelayed(() -> {
                 showMessage("Deactivating SSTV encoder");
-                AFSKEncoder.stopSSTVEncoding(1750.0);
+                // AFSKEncoder.stopSSTVEncoding(1900.0); // UNUSED SPECIAL FREQUENCY FOR STOPPING SSTV
                 insertDataIntoDatabase(imageByteArray, null);
                 displayNewData();
             }, totalTextAndImageEncodingTime + 3000);
