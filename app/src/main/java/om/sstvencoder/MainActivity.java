@@ -174,11 +174,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case REQUEST_LOCATION_PERMISSION:
                 if (permissionGranted(grantResults)) {
-                    showMessage("Location permission successfully granted");
+                    break;
                 } else {
                     showMessage("Location permission not granted");
                     int delayMillis = 3000;
-                    new Handler().postDelayed(() -> showMessage("You can grant the app location permission in Settings"), delayMillis);
+                    new Handler().postDelayed(() -> {
+                        showMessage("You can grant the app location permission in Settings");
+                        finish();
+                    }, delayMillis);
                 }
                 break;
             default:
@@ -503,7 +506,7 @@ public class MainActivity extends AppCompatActivity {
             mEncoder.setOnEncodeCompleteListener(() -> showMessage("Encoding image now"));
             mHandler.postDelayed(() -> mEncoder.play(cpvDisplayPicture.getBitmap()), 4000);
             imageEncodingRunnable = () -> {
-                showMessage("Deactivating SSTV encoder");
+                // showMessage("Deactivating SSTV encoder");
                 // AFSKEncoder.stopSSTVEncoding(1900.0); // UNUSED SPECIAL FREQUENCY FOR STOPPING SSTV
                 insertDataIntoDatabase(imageByteArray, null);
                 displayNewData();
@@ -528,7 +531,7 @@ public class MainActivity extends AppCompatActivity {
             };
             mHandler.postDelayed(textEncodingRunnable, totalTextEncodingTime);
             mHandler.postDelayed(() -> {
-                showMessage("Deactivating SSTV encoder");
+                // showMessage("Deactivating SSTV encoder");
                 // AFSKEncoder.stopSSTVEncoding(1900.0); // UNUSED SPECIAL FREQUENCY FOR STOPPING SSTV
                 insertDataIntoDatabase(imageByteArray, null);
                 displayNewData();
